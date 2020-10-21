@@ -30,7 +30,6 @@ import org.gradle.internal.model.ValueCalculator
 class CalculatedValueContainerCodec : Codec<CalculatedValueContainer<Any, ValueCalculator<Any>>> {
     override suspend fun WriteContext.encode(value: CalculatedValueContainer<Any, ValueCalculator<Any>>) {
         encodePreservingSharedIdentityOf(value) {
-            println("WRITE " + System.identityHashCode(value))
             val result = value.orNull
             if (result != null) {
                 writeBoolean(true)
