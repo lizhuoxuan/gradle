@@ -16,7 +16,6 @@
 
 package org.gradle.configurationcache.serialization.codecs
 
-import org.gradle.configurationcache.extensions.uncheckedCast
 import org.gradle.configurationcache.serialization.Codec
 import org.gradle.configurationcache.serialization.ReadContext
 import org.gradle.configurationcache.serialization.WriteContext
@@ -44,7 +43,7 @@ class CalculatedValueContainerCodec : Codec<CalculatedValueContainer<Any, ValueC
     }
 
     override suspend fun ReadContext.decode(): CalculatedValueContainer<Any, ValueCalculator<Any>>? {
-        val value = decodePreservingSharedIdentity {
+        return decodePreservingSharedIdentity {
             val available = readBoolean()
             if (available) {
                 val value = read()
@@ -54,7 +53,5 @@ class CalculatedValueContainerCodec : Codec<CalculatedValueContainer<Any, ValueC
                 CalculatedValueContainer.of(Describables.of("unknown value"), supplier)
             }
         }
-        println("-> READ ${System.identityHashCode(value)}")
-        return value.uncheckedCast()
     }
 }
